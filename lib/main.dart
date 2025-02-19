@@ -15,6 +15,7 @@ class DigitalPetApp extends StatefulWidget {
 class _DigitalPetAppState extends State<DigitalPetApp> {
   String petName = "Your Pet";
   int hungerLevel = 50;
+  int happinessLevel = 50;
   int energyLevel = 100;
   Timer? hungerTimer;
   Timer? restTimer;
@@ -29,6 +30,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     hungerTimer = Timer.periodic(Duration(seconds: 30), (timer) {
       setState(() {
         hungerLevel = (hungerLevel + 5).clamp(0, 100);
+        happinessLevel = (happinessLevel - 5).clamp(0, 100);
       });
     });
   }
@@ -40,6 +42,18 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
         energyLevel = (energyLevel + 5).clamp(0, 100);
       });
     });
+  }
+
+  Color getPetColor() {
+    if (happinessLevel > 70) return Colors.green;
+    if (happinessLevel >= 30) return Colors.yellow;
+    return Colors.red;
+  }
+
+  String getMoodText() {
+    if (happinessLevel > 70) return "Happy 😊";
+    if (happinessLevel >= 30) return "Neutral 😐";
+    return "Unhappy 😢";
   }
 
   @override
@@ -54,7 +68,17 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
           children: <Widget>[
             Text('Name: $petName', style: TextStyle(fontSize: 20.0)),
             Text('Hunger Level: $hungerLevel', style: TextStyle(fontSize: 20.0)),
+            Text('Happiness Level: $happinessLevel', style: TextStyle(fontSize: 20.0)),
+            Text('Mood: ${getMoodText()}', style: TextStyle(fontSize: 20.0)),
             Text('Energy Level: $energyLevel', style: TextStyle(fontSize: 20.0)),
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: getPetColor(),
+                shape: BoxShape.circle,
+              ),
+            ),
           ],
         ),
       ),
