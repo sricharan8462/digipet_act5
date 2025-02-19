@@ -15,6 +15,7 @@ class DigitalPetApp extends StatefulWidget {
 class _DigitalPetAppState extends State<DigitalPetApp> {
   String petName = "Your Pet";
   int hungerLevel = 50;
+  int happinessLevel = 50;
   int energyLevel = 100;
   Timer? hungerTimer;
   Timer? restTimer;
@@ -29,6 +30,8 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     hungerTimer = Timer.periodic(Duration(seconds: 30), (timer) {
       setState(() {
         hungerLevel = (hungerLevel + 5).clamp(0, 100);
+        happinessLevel = (happinessLevel - 5)
+            .clamp(0, 100); // Happiness decreases as hunger increases
       });
     });
   }
@@ -53,8 +56,12 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text('Name: $petName', style: TextStyle(fontSize: 20.0)),
-            Text('Hunger Level: $hungerLevel', style: TextStyle(fontSize: 20.0)),
-            Text('Energy Level: $energyLevel', style: TextStyle(fontSize: 20.0)),
+            Text('Hunger Level: $hungerLevel',
+                style: TextStyle(fontSize: 20.0)),
+            Text('Happiness Level: $happinessLevel',
+                style: TextStyle(fontSize: 20.0)),
+            Text('Energy Level: $energyLevel',
+                style: TextStyle(fontSize: 20.0)),
           ],
         ),
       ),
