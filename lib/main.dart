@@ -15,7 +15,9 @@ class DigitalPetApp extends StatefulWidget {
 class _DigitalPetAppState extends State<DigitalPetApp> {
   String petName = "Your Pet";
   int hungerLevel = 50;
+  int energyLevel = 100;
   Timer? hungerTimer;
+  Timer? restTimer;
 
   @override
   void initState() {
@@ -31,6 +33,15 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     });
   }
 
+  void startRestTimer() {
+    restTimer?.cancel();
+    restTimer = Timer.periodic(Duration(seconds: 30), (timer) {
+      setState(() {
+        energyLevel = (energyLevel + 5).clamp(0, 100);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,11 +53,18 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text('Name: $petName', style: TextStyle(fontSize: 20.0)),
-            Text('Hunger Level: $hungerLevel',
-                style: TextStyle(fontSize: 20.0)),
+            Text('Hunger Level: $hungerLevel', style: TextStyle(fontSize: 20.0)),
+            Text('Energy Level: $energyLevel', style: TextStyle(fontSize: 20.0)),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    hungerTimer?.cancel();
+    restTimer?.cancel();
+    super.dispose();
   }
 }
